@@ -1,0 +1,38 @@
+{
+  "date": "2026-02-24",
+  "summary": "CI failures were caused by incompatible dependency versions and an incorrect pytest configuration. Dependencies were updated for Pydantic v2 support and Python 3.14 wheel availability, pytest was upgraded, and test discovery was fixed.",
+  "changes": [
+    {
+      "file": "issue_fixed/requirements.txt",
+      "before": {
+        "pydantic": "1.10.2",
+        "pytest": "7.4.0"
+      },
+      "after": {
+        "pydantic": "2.12.5",
+        "pytest": "8.3.4"
+      },
+      "reason": "app.validator uses pydantic.field_validator (Pydantic v2 API) and pydantic-core wheels for Python 3.14 are available starting with v2.12.x. pytest was bumped to a modern version compatible with Python 3.14."
+    },
+    {
+      "file": "issue_fixed/pytest.ini",
+      "before": "testpaths = test",
+      "after": "testpaths = tests",
+      "reason": "Tests live under tests/ so pytest discovery was failing." 
+    },
+    {
+      "file": ".gitignore",
+      "added": [".venv/", "issue_fixed/.venv/"],
+      "reason": "Ignore local virtual environments." 
+    }
+  ],
+  "environment": {
+    "venvPath": "issue_fixed/.venv",
+    "pythonVersion": "3.14.2"
+  },
+  "testRun": {
+    "command": ".venv/Scripts/python run_ci.py",
+    "logFile": "issue_fixed/logs/test_run.log",
+    "result": "3 passed"
+  }
+}
